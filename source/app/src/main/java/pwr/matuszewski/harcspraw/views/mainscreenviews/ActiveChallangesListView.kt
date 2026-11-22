@@ -1,6 +1,7 @@
-package pwr.matuszewski.harcspraw.views
+package pwr.matuszewski.harcspraw.views.mainscreenviews
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,6 +28,7 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -45,60 +47,64 @@ import pwr.matuszewski.harcspraw.ui.theme.HarcSprawTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ActiveChallangesView() {
+fun ActiveChallengesView() {
     val options: List<String> = listOf("a", "b", "c", "d", "e")
     var expanded by remember { mutableStateOf(false) }
     val textFieldState = rememberTextFieldState(options[0])
 
-    Column(Modifier.fillMaxSize().padding(top = 40.dp)) {
-        Text("Aktywne próby", style = MaterialTheme.typography.headlineLarge)
-        Row(Modifier.fillMaxWidth()) {
-            Text("2 próby w toku")
+    Scaffold(
+        Modifier.fillMaxSize()
+    ) { innerPadding ->
+        Column(Modifier.padding(innerPadding).fillMaxSize()) {
+            Text("Aktywne próby", style = MaterialTheme.typography.headlineLarge)
+            Row(Modifier.fillMaxWidth()) {
+                Text("2 próby w toku")
 
-            ExposedDropdownMenuBox(
-                expanded = expanded,
-                onExpandedChange = { expanded = it },
-                Modifier.fillMaxWidth().height(64.dp)
-            ) {
-                TextField(
-                    // The `menuAnchor` modifier must be passed to the text field to handle
-                    // expanding/collapsing the menu on click. A read-only text field has
-                    // the anchor type `PrimaryNotEditable`.
-                    modifier = Modifier.menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
-                    state = textFieldState,
-                    readOnly = true,
-                    lineLimits = TextFieldLineLimits.SingleLine,
-                    label = { Text("Label") },
-                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                    colors = ExposedDropdownMenuDefaults.textFieldColors(),
-                )
-                ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                options.forEach { option ->
-                    DropdownMenuItem(
-                        text = { Text(option) },
-                        onClick = {
-                            textFieldState.setTextAndPlaceCursorAtEnd(option)
-                            expanded = false
-                        },
-                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                ExposedDropdownMenuBox(
+                    expanded = expanded,
+                    onExpandedChange = { expanded = it },
+                    Modifier.fillMaxWidth().height(64.dp)
+                ) {
+                    TextField(
+                        // The `menuAnchor` modifier must be passed to the text field to handle
+                        // expanding/collapsing the menu on click. A read-only text field has
+                        // the anchor type `PrimaryNotEditable`.
+                        modifier = Modifier.menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
+                        state = textFieldState,
+                        readOnly = true,
+                        lineLimits = TextFieldLineLimits.SingleLine,
+                        label = { Text("Label") },
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                        colors = ExposedDropdownMenuDefaults.textFieldColors(),
                     )
+                    ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                        options.forEach { option ->
+                            DropdownMenuItem(
+                                text = { Text(option) },
+                                onClick = {
+                                    textFieldState.setTextAndPlaceCursorAtEnd(option)
+                                    expanded = false
+                                },
+                                contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                            )
+                        }
+                    }
                 }
             }
-            }
-        }
 
-        LazyColumn(
-            Modifier.fillMaxSize().padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(14.dp)
-        ) {
-            items(10) {
-                ActiveChallengeListItem(
-                    name = "Skaut",
-                    level = 3,
-                    completedTasks = 3,
-                    tasks = 5,
-                    timeLeft = 21
-                )
+            LazyColumn(
+                Modifier.fillMaxSize().padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(14.dp)
+            ) {
+                items(10) {
+                    ActiveChallengeListItem(
+                        name = "Skaut",
+                        level = 3,
+                        completedTasks = 3,
+                        tasks = 5,
+                        timeLeft = 21
+                    )
+                }
             }
         }
     }
@@ -107,7 +113,13 @@ fun ActiveChallangesView() {
 @Composable
 fun ActiveChallengeListItem(name: String, level: Int, completedTasks: Int, tasks: Int, timeLeft: Int) {
     Card(
-        Modifier.fillMaxWidth().wrapContentHeight().clip(CardDefaults.shape)
+        Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .clip(CardDefaults.shape)
+            .clickable() {
+                //TODO go to ChallengeDetailsView
+            }
     ) {
         Column(Modifier.fillMaxWidth().wrapContentHeight().padding(10.dp)) {
             Row(
@@ -122,7 +134,7 @@ fun ActiveChallengeListItem(name: String, level: Int, completedTasks: Int, tasks
                 Column() {
                     Text(name, style = MaterialTheme.typography.headlineMedium)
                     Row() {
-                        //TODO("Change Box to level icon")
+                        //TODO change box to level icon
                         Box(Modifier.size(25.dp).clip(CircleShape).background(Color.Green))
                         Text("Poziom $level", style = MaterialTheme.typography.bodyMedium)
                     }
@@ -195,9 +207,8 @@ fun ActiveChallengeListPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun ActiveChallangesViewPreview() {
+fun ActiveChallengesViewPreview() {
     HarcSprawTheme {
-        ActiveChallangesView()
-
+        ActiveChallengesView()
     }
 }
