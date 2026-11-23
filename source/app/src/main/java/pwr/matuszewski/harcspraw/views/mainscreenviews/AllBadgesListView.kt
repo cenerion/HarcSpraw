@@ -28,11 +28,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import pwr.matuszewski.harcspraw.BadgeDetails
 import pwr.matuszewski.harcspraw.R
 import pwr.matuszewski.harcspraw.ui.theme.HarcSprawTheme
 
 @Composable
-fun AllBadgesListView() {
+fun AllBadgesListView(navController: NavHostController) {
     Scaffold(modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
         Column(
@@ -57,7 +60,7 @@ fun AllBadgesListView() {
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 items(40){
-                    AllBadgesListItem("Nazwa", "* ** ***", R.drawable.sim_spr_h_skaut)
+                    AllBadgesListItem("Nazwa", "* ** ***", R.drawable.sim_spr_h_skaut, navController)
                 }
             }
         }
@@ -68,7 +71,8 @@ fun AllBadgesListView() {
 fun AllBadgesListItem(
     badgeName: String,
     levels: String,
-    @DrawableRes icon: Int
+    @DrawableRes icon: Int,
+    navController: NavHostController
 ) {
     Column(
         Modifier
@@ -81,6 +85,7 @@ fun AllBadgesListItem(
                 shape = RoundedCornerShape(15.dp))
             .clickable() {
                 //TODO go to BadgeDetailsView
+                navController.navigate(BadgeDetails)
             }
             .padding(10.dp),
         verticalArrangement = Arrangement.spacedBy(5.dp),
@@ -104,7 +109,7 @@ fun AllBadgesListItem(
 @Composable
 fun AllBadgesListItemPreview() {
     HarcSprawTheme() {
-        AllBadgesListItem("Nazwa", "* ** ***", R.drawable.sim_spr_h_skaut)
+        AllBadgesListItem("Nazwa", "* ** ***", R.drawable.sim_spr_h_skaut, rememberNavController())
     }
 }
 
@@ -112,6 +117,6 @@ fun AllBadgesListItemPreview() {
 @Composable
 fun AllBadgesListViewPreview() {
     HarcSprawTheme {
-        AllBadgesListView()
+        AllBadgesListView(rememberNavController())
     }
 }

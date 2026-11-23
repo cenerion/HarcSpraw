@@ -14,7 +14,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import kotlinx.serialization.Serializable
 import pwr.matuszewski.harcspraw.ui.theme.HarcSprawTheme
+import pwr.matuszewski.harcspraw.views.BadgeDetailsView
 import pwr.matuszewski.harcspraw.views.mainscreenviews.ActiveChallengesView
 import pwr.matuszewski.harcspraw.views.mainscreenviews.AllBadgesListView
 import pwr.matuszewski.harcspraw.views.mainscreenviews.ObtainedBadgesListView
@@ -31,9 +37,28 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
+@Serializable
+object MainScreen
+@Serializable
+object BadgeDetails
+
 @PreviewScreenSizes
 @Composable
 fun HarcSprawApp() {
+
+    val navController = rememberNavController()
+
+//    NavHost(
+//        navController = navController,
+//        startDestination = MainScreen
+//    ) {
+//        composable<MainScreen> {HarcSprawApp()}
+//        composable<BadgeDetails> {BadgeDetailsView(navController)}
+//    }
+
+
+
     var currentDestination by rememberSaveable { mutableStateOf(AppDestinations.HOME) }
 
     NavigationSuiteScaffold(
@@ -54,9 +79,10 @@ fun HarcSprawApp() {
         }
     ) {
         when(currentDestination) {
-            AppDestinations.HOME -> AllBadgesListView()
+            AppDestinations.HOME -> AllBadgesListView(navController)
             AppDestinations.FAVORITES -> ActiveChallengesView()
             AppDestinations.PROFILE -> ObtainedBadgesListView()
+            AppDestinations.TEST -> BadgeDetailsView(navController)
         }
     }
 }
@@ -68,4 +94,5 @@ enum class AppDestinations(
     HOME("Lista sprawnosci", R.drawable.ic_home),
     FAVORITES("Otwarte próby", R.drawable.ic_favorite),
     PROFILE("Posiadane", R.drawable.ic_account_box),
+    TEST("Test", R.drawable.ic_account_box),
 }
