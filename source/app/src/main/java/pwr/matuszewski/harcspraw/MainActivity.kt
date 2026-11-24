@@ -20,6 +20,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import kotlinx.serialization.Serializable
+import pwr.matuszewski.harcspraw.navigation.AppNavigation
 import pwr.matuszewski.harcspraw.ui.theme.HarcSprawTheme
 import pwr.matuszewski.harcspraw.views.BadgeDetailsView
 import pwr.matuszewski.harcspraw.views.mainscreenviews.ActiveChallengesView
@@ -27,26 +28,13 @@ import pwr.matuszewski.harcspraw.views.mainscreenviews.AllBadgesListView
 import pwr.matuszewski.harcspraw.views.mainscreenviews.ObtainedBadgesListView
 
 
-@Serializable
-object MainScreen
-@Serializable
-object BadgeDetails
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-
             HarcSprawTheme {
-                val navController = rememberNavController()
-                NavHost(
-                    navController = navController,
-                    startDestination = MainScreen
-                ) {
-                    composable<MainScreen> {HarcSprawApp(navController)}
-                    composable<BadgeDetails> {BadgeDetailsView(navController)}
-                }
+                AppNavigation()
             }
         }
     }
