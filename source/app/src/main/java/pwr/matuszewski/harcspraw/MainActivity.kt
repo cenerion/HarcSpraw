@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -25,39 +26,38 @@ import pwr.matuszewski.harcspraw.views.mainscreenviews.ActiveChallengesView
 import pwr.matuszewski.harcspraw.views.mainscreenviews.AllBadgesListView
 import pwr.matuszewski.harcspraw.views.mainscreenviews.ObtainedBadgesListView
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            HarcSprawTheme {
-                HarcSprawApp()
-            }
-        }
-    }
-}
-
 
 @Serializable
 object MainScreen
 @Serializable
 object BadgeDetails
 
-@PreviewScreenSizes
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+
+            HarcSprawTheme {
+                val navController = rememberNavController()
+                NavHost(
+                    navController = navController,
+                    startDestination = MainScreen
+                ) {
+                    composable<MainScreen> {HarcSprawApp(navController)}
+                    composable<BadgeDetails> {BadgeDetailsView(navController)}
+                }
+            }
+        }
+    }
+}
+
+
+
+//HarcSprawApp()
+//@PreviewScreenSizes
 @Composable
-fun HarcSprawApp() {
-
-    val navController = rememberNavController()
-
-//    NavHost(
-//        navController = navController,
-//        startDestination = MainScreen
-//    ) {
-//        composable<MainScreen> {HarcSprawApp()}
-//        composable<BadgeDetails> {BadgeDetailsView(navController)}
-//    }
-
-
+fun HarcSprawApp(navController: NavHostController) {
 
     var currentDestination by rememberSaveable { mutableStateOf(AppDestinations.HOME) }
 
