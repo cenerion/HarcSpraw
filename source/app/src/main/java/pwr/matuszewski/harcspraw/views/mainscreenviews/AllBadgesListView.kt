@@ -30,7 +30,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import pwr.matuszewski.harcspraw.BadgeDetails
 import pwr.matuszewski.harcspraw.R
 import pwr.matuszewski.harcspraw.ui.theme.HarcSprawTheme
 
@@ -83,10 +82,7 @@ fun AllBadgesListItem(
                 width = 2.dp,
                 color = Color.Gray,
                 shape = RoundedCornerShape(15.dp))
-            .clickable() {
-                //TODO go to BadgeDetailsView
-                navController.navigate(BadgeDetails)
-            }
+            .clickable(onClick = {})
             .padding(10.dp),
         verticalArrangement = Arrangement.spacedBy(5.dp),
         horizontalAlignment = Alignment.CenterHorizontally

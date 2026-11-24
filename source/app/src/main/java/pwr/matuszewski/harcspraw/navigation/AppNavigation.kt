@@ -5,9 +5,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import kotlinx.serialization.Serializable
-import pwr.matuszewski.harcspraw.HarcSprawApp
-import pwr.matuszewski.harcspraw.ui.theme.HarcSprawTheme
 import pwr.matuszewski.harcspraw.views.BadgeDetailsView
+import pwr.matuszewski.harcspraw.views.MainScreen
+import pwr.matuszewski.harcspraw.views.ObtainedBadgeDetailsView
 
 @Composable
 fun AppNavigation() {
@@ -16,8 +16,9 @@ fun AppNavigation() {
         navController = navController,
         startDestination = MainScreen
     ) {
-        composable<MainScreen> {HarcSprawApp(navController)}
+        composable<MainScreen> { MainScreen(navController)}
         composable<BadgeDetails> {BadgeDetailsView(navController)}
+        composable<ObtainedBadgeDetails> { ObtainedBadgeDetailsView() }
     }
 }
 
@@ -26,3 +27,6 @@ fun AppNavigation() {
 object MainScreen
 @Serializable
 object BadgeDetails
+
+@Serializable
+object ObtainedBadgeDetails
